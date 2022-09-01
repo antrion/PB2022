@@ -9,7 +9,7 @@ app.use(express.json());
 //* request/ response
 const DB = new db("data");
 
-// root = no hay problema
+
 app.get("/", (req, res) => {
     res.send({ error: false });
 });
@@ -19,10 +19,6 @@ app.get("/productos", async (req, res) => {
     const data = await DB.getAll();
     return res.send(data);
 });
-
-//getById
-// queries
-// * GET ?id=10
 
 app.get("/productosRandom", async (req, res) => {
 const data = await DB.getAll();
