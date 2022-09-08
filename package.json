@@ -1,7 +1,6 @@
 {
   "name": "pb2022",
   "version": "1.0.0",
-  "description": "",
   "main": "main.js",
   "scripts": {
     "start": "node main.js",
@@ -20,5 +19,6 @@
   "dependencies": {
     "express": "^4.18.1",
     "nodemon": "^2.0.19"
-  }
+  },
+  "description": ""
 }
