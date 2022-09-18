@@ -1,0 +1,31 @@
+{{> header }}
+
+<h2>Vista de Productos</h2>
+
+{{#if productos}}
+<main role="main" class="container">
+    <h1 class="mt-5">Productos</h1>
+    <table class="table table-dark">
+        <thead>
+            <tr>
+                <th scope="col">Nombre</th>
+                <th scope="col">Precio</th>
+                <th scope="col">Imágen</th>
+            </tr>
+        </thead>
+    <tbody>
+    {{#each productos}}
+    <tr>
+        <th scope="col">{{this.name}}</th>
+        <th scope="col">{{this.price}}</th>
+        <th scope="col"><img src={{this.thumbnail}} alt={{this.name}} width="100" height="100"></th>
+    </tr>
+
+    {{/each}}
+    </tbody>
+    </table>
+</main>
+{{else}}
+<h3>No se encontraron productos</h3>
+{{/if}}
+<a href="/">Cargar Productos</a>
