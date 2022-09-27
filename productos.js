@@ -1,42 +1,60 @@
-const express = require("express");
-const { Router } = express;
+const fs = require("fs");
 
-const router = Router();
-let productos = [];
+class Productos {
 
-router.get("/", (req, res) => {
-    res.send({ productos });
-});
-
-router.get("/:id", (req, res) => {
-    const { id } = req.params;
-    const prod = productos[id - 1];
-    if (prod) {
-        res.send({ prod });
-    } else {
-        res.send({ error: "Producto no encontrado" });
+    constructor(archivo) {
+        this.archivo = archivo;
     }
-});
 
-router.post("/", (req, res) => {
-    const { name, price, thumbnail } = req.body;
-    const id = productos.length + 1;
-    productos.push({ name, price, thumbnail, id });
-    res.send({ agregado: { name, price, thumbnail, id } });
-});
+    async save(objProd) {
+        // * Se lee el archivo para obtener la cantidad de productos y generar un nuevo id
+        const data = await fs.promises.readFile(`${this.archivo}/productos.json`,"utf-8");
+        const productos = JSON.parse(data);
+        const id = productos.length + 1;
+        objProd.id = id;
+        // * { name: string, price: int, thumbnail: string, id: id }
+        productos.push(objProd);
+        const productosString = JSON.stringify(productos);
+        await fs.promises.writeFile(`${this.archivo}/productos.json`,productosString);
+    
+        return id;
+    }
 
-router.put("/:id", (req, res) => {
-    const { id } = req.params;
-    const { prod } = req.body;
-    productos[id - 1] = prod;
-    res.send({ actualizado: prod });
-});
+    async getById(id) {
+        const data = await fs.promises.readFile(`${this.archivo}/productos.json`,"utf-8");
+        const productos = JSON.parse(data);
+        const producto = productos.find((producto) => producto.id == id);
+        if (producto) {
+            return producto;
+        } else {
+            return "Producto no encontrado";
+        }
+    }
 
-router.delete("/:id", (req, res) => {
-    const { id } = req.params;
-    const producto = productos[id - 1];
-    productos = productos.filter((prod) => prod !== productos[id - 1]);
-    res.send({ eliminado: producto });
-});
+    async getAll() {
+        try {
+            const data = await fs.promises.readFile(`${this.archivo}/productos.json`,"utf-8");
+            return JSON.parse(data);
+        } catch (error) {
+            return [];
+        }
+    }
 
-module.exports = router;
+    async deleteById(id) {
+        // * Se lee el archivo para obtener la cantidad de productos y generar un nuevo id
+        const data = await fs.promises.readFile(`${this.archivo}/productos.json`,"utf-8");
+        const productos = JSON.parse(data);
+        const productosFilter = productos.filter(item => item.id !== id)
+        const productosString = JSON.stringify(productosFilter);
+        await this.deleteAll();
+        await fs.promises.writeFile(`${this.archivo}/productos.json`,productosString);
+    
+        return id;
+    }
+
+    async deleteAll() {
+        await fs.promises.writeFile(`${this.archivo}/productos.json`,"[]");
+    }
+}
+
+module.exports = Productos;
