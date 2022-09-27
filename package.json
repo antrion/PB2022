@@ -1,24 +1,16 @@
 {
-  "name": "pb2022",
+  "name": "hbs",
   "version": "1.0.0",
-  "main": "main.js",
+  "description": "",
+  "main": "index.js",
   "scripts": {
-    "start": "node main.js",
     "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/antrion/PB2022.git"
   },
   "author": "",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/antrion/PB2022/issues"
-  },
-  "homepage": "https://github.com/antrion/PB2022#readme",
   "dependencies": {
     "express": "^4.18.1",
-    "nodemon": "^2.0.19"
-  },
-  "description": ""
+    "express-handlebars": "^6.0.6",
+    "socket.io": "^4.5.2"
+  }
 }

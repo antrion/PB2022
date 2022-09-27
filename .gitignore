@@ -2,9 +2,6 @@
 
 # dependencies
 /node_modules
-/hbs/node_modules
-/pug/node_modules
-/ejs/node_modules
 /.pnp
 .pnp.js
 
