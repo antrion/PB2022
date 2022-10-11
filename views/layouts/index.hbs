@@ -1,48 +1,5 @@
-<html>
-<head>
-    <title>E-Commerce</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css">
-    <script src="/socket.io/socket.io.js"></script>
+{{> header }}
 
-<body>
-    <h2>Ingrese Producto</h2>
-    <form action="/" method="POST">
-        Nombre:<input type="text" name="name"/><br>
-        Precio:<input type="text" name="price"/><br>
-        Thumbnail:<input type="text" name="thumbnail"/><br>
-        <input type="submit" value="Guardar">
-    </form>
-
-{{> productos }}
-
-<h2>Centro de Mensajes</h2>
-<input id="email" type="email" placeholder="Ingrese su email">
-<div id="listaMensajes">
-
-
-</div>
-<input id="mensaje" type="text" placeholder="Ingrese su mensaje"><button>Enviar!</button>
-<script>
-
-const socket = io.connect()
-
-document.querySelector('button').addEventListener('click', () => {
-    
-    const email = document.getElementById('email').value
-    const mensaje = document.getElementById('mensaje').value
-    socket.emit('mensaje', email, mensaje)
-
-})
-
-socket.on('listaMensajes', (data) => {
-    console.log(data)
-    const MappedCont = data.map(msg => `<span style="color:blue;">${msg.autor}</span><span style="color:red;">[${msg.fecha}]:</span><span style="color:green;">${msg.mensaje}</span>`).join(`<br>`);
-    document.querySelector('div').innerHTML = MappedCont
-
-})
-
-</script>
-</body>
-</head>
-</html>
+<a href="/api/productos">Ver Productos</a>
+<a href="/api/carrito">Ver Carrito</a>
 
