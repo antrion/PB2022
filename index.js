@@ -1,11 +1,10 @@
 const express = require("express");
 const { Server: HTTPServer } = require("http");
-const { Server: SocketServer } = require("socket.io");
 const handlebars = require("express-handlebars");
 const app = express();
-const db = require("./productos.js");
+const productosRouter = require("./router/productosRouter");
+const carritosRouter = require("./router/carritosRouter")
 const httpServer = new HTTPServer(app);
-const io = new SocketServer(httpServer);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -25,45 +24,14 @@ app.engine(
 app.set("views", "./views");
 app.set("view engine", "hbs");
 
-const DB = new db("data");
-const Mensajes = [];
-
-io.on('connection', socket => {
-    console.log ('conectado', socket.id)
-
-    socket.on('mensaje', (email, mensaje) => {
-        console.log(email, mensaje)
-        var todayDate = new Date().toLocaleString();
-        Mensajes.push({autor: email, fecha: todayDate, mensaje: mensaje})
-        io.sockets.emit('listaMensajes', Mensajes)
-    });
-    
-})
-
 app.get("/", (req, res) => {
-    async function getData(){
-        try{
-            const response =  await import('../data/productos.json')
-            return response.json()
-        }catch(err){
-            return err
-        }}
-    res.render("main", {
-            layout: "index",
-            productos: getData,
-    })
-});
-
-app.post("/", async (req, res) => {
-    const { name, price, thumbnail } = req.body;
-    const productos = await DB.getAll();
-    const id = productos.length + 1;
-    DB.save({name, price, thumbnail, id});
     res.render("main", {
         layout: "index",
-        productos: productos,
     })
 });
+
+app.use("/api/productos", productosRouter);
+app.use("/api/carrito", carritosRouter);
 
 httpServer.listen(8080, () => {
     console.log("Iniciado");

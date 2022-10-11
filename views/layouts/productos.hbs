@@ -1,0 +1,48 @@
+{{> header }}
+
+<h2>Ingrese Producto</h2>
+<form action="/api/productos/" method="POST">
+    Nombre:<input type="text" name="name"/><br>
+    Descripcion:<input type="text" name="desc"/><br>
+    Codigo:<input type="text" name="code"/><br>
+    Thumbnail:<input type="text" name="thumbnail"/><br>
+    Precio:<input type="text" name="price"/><br>
+    Stock:<input type="text" name="stock"/><br>
+    <input type="submit" value="Enviar">
+</form>
+
+{{#if productos}}
+<form action="/api/carrito/1/productos" method="POST">
+<main role="main" class="container">
+    <h2 class="mt-5">Lista de Productos</h2>
+    <table class="table table-dark">
+        <thead>
+            <tr>
+                <th scope="col">Nombre</th>
+                <th scope="col">Descripción</th>
+                <th scope="col">Código</th>
+                <th scope="col">Precio</th>
+                <th scope="col">Imágen</th>
+                <th scope="col">Stock</th>
+            </tr>
+        </thead>
+    <tbody>
+    {{#each productos}}
+    <tr>
+        <th scope="col">{{this.name}}</th>
+        <th scope="col">{{this.desc}}</th>
+        <th scope="col">{{this.code}}</th>
+        <th scope="col">{{this.price}}</th>
+        <th scope="col"><img src={{this.thumbnail}} alt={{this.name}} width="100" height="100"></th>
+        <th scope="col">{{this.stock}}</th>
+        <th scope="col"><input type="submit" value="Agregar"></th>
+    </tr>
+
+    {{/each}}
+    </tbody>
+    </table>
+</main>
+</form>
+{{else}}
+<h3>No se encontraron productos</h3>
+{{/if}}
